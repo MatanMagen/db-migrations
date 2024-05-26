@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flyway-configmap
+  namespace: default
+data:
+  flyway.conf: |
+    flyway.url=jdbc:postgresql://postgres-service.default.svc.cluster.local:5432/postgres
+    flyway.user=postgres
+    flyway.password=mysecretpassword
+    flyway.schemas=public
+    flyway.locations=filesystem:/flyway/sql
+ 
