@@ -1,0 +1,64 @@
+apiVersion: db.atlasgo.io/v1alpha1
+kind: AtlasSchema
+metadata:
+  name: myapp
+spec:
+  urlFrom:
+    secretKeyRef:
+      key: url
+      name: pg-credentials
+  schema:
+    hcl: |
+      table "users" {
+        schema = schema.main
+        column "id" {
+          null = false
+          type = int
+        }
+        column "first_name_test" {
+          null = true
+          type = varchar(255)
+        }
+        column "last_name" {
+          null = true
+          type = varchar(255)
+        }
+        primary_key {
+          columns = [column.id]
+        }
+      }
+      table "orders" {
+        schema = schema.main
+        column "id" {
+          null = false
+          type = int
+        }
+        column "name" {
+          null = true
+          type = varchar(255)
+        }
+        column "user_id" {
+          null = false
+          type = int
+        }
+        primary_key {
+          columns = [column.id]
+        }
+        foreign_key "user_id" {
+          columns = [column.user_id]
+          ref_columns = [table.users.column.id]
+          on_update = NO_ACTION
+          on_delete = NO_ACTION
+        }
+      }
+      schema "main" {
+      }
+  policy:
+    lint:
+      destructive:
+        error: true
+    diff:
+      skip:
+        drop_column: true
+  exclude:
+    - public

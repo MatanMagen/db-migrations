@@ -1,0 +1,36 @@
+apiVersion: v1
+data:
+  dev-scheme.hcl: |-
+    table "blog_posts" {
+      schema = schema.example
+      column "id" {
+        null = false
+        type = int
+      }
+      column "title" {
+        null = true
+        type = varchar(100)
+      }
+      column "body" {
+        null = true
+        type = text
+      }
+      column "author_id" {
+        null = true
+        type = int
+      }
+      primary_key {
+        columns = [column.id]
+      }
+      foreign_key "author_fk" {
+        columns     = [column.author_id]
+        ref_columns = [table.users.column.id]
+      }
+    }
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2024-05-26T07:57:58Z"
+  name: schema-configmap
+  namespace: default
+  resourceVersion: "3272"
+  uid: 0d00f084-8ef5-40b9-9741-13975a56b4ae

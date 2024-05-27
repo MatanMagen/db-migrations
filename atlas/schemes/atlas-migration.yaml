@@ -1,0 +1,12 @@
+apiVersion: db.atlasgo.io/v1alpha1
+kind: AtlasMigration
+metadata:
+  name: atlas-migration
+spec:
+  urlFrom:
+    secretKeyRef:
+      key: url
+      name: pg-credentials
+  dir:
+    configMapRef:
+      name: schema-configmap
